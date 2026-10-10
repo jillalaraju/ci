@@ -1,28 +1,28 @@
-name: Node.js CI
+
+name: Build
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-
     steps:
-      # ------------------------------------------------------
-      # STEP 1 → CHECKOUT CODE
-      # ------------------------------------------------------
-      - name: Checkout Code
+      - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
+      - name: Install dependencies
+        run: npm install
 
-      - name: Check current directory
-        run: pwd
-
-      - name: List files
-        run: ls -la ./node
+      - name: Build
+        run: npm run build
